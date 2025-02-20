@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan JavaScript.</title>
+    <style>
+       * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fc;
+            color: #333;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            border: 3px solid black; /* Add border to the container */
+        }
+
+        h2 {
+            text-align: center;
+            color: black;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 2px solid #ddd; /* Add border to each section */
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input[type="number"], input[type="text"] {
+            background-color: #fafafa;
+        }
+
+        select {
+            background-color: #fff;
+        }
+
+        button {
+            background-color: gray;
+            color: white;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: black;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            background-color: #e9f7f6;
+            padding: 15px;
+            border-radius: 5px;
+            border: 2px solid black; /* Add border to result box */
+        }
+
+        .template-box {
+            background-color: #e9f7f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 2px solid black; /* Add border to template box */
+        }
+
+        .template-box p {
+            margin: 5px 0;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+            .result {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>JavaScript Exercise</h2>
+
+    <!-- Diskon dan Nominal -->
+    <div class="section">
+        <h3>Discount</h3>
+        <input type="number" id="harga" placeholder="Price" />
+        <input type="number" id="diskon" placeholder="Discount (%)" />
+        <button onclick="hitungDiskon()">Count Discount</button>
+        <div class="result" id="diskonResult"></div>
+    </div>
+
+    <!-- Konversi Suhu -->
+    <div class="section">
+        <h3>Temperature conversion</h3>
+        <input type="number" id="suhu" placeholder="Input Temperature" />
+        <select id="unitInput">
+            <option value="Celsius">Celcius</option>
+            <option value="Fahrenheit">Fahrenheit</option>
+            <option value="Kelvin">Kelvin</option>
+            <option value="Reamur">Reamur</option>
+        </select>
+        <button onclick="konversiSuhu()">Convert</button>
+        <div class="result" id="konversiResult"></div>
+    </div>
+
+    <!-- Kalkulator -->
+    <div class="section">
+        <h3>Calculator</h3>
+        <input type="number" id="angka1" placeholder="Number 1" />
+        <input type="number" id="angka2" placeholder="Number 2" />
+        <select id="operasi">
+            <option value="add">+</option>
+            <option value="subtract">-</option>
+            <option value="multiply">*</option>
+            <option value="divide">/</option>
+        </select>
+        <button onclick="kalkulator()">Count</button>
+        <div class="result" id="kalkulatorResult"></div>
+    </div>
+
+    <!-- Data Template -->
+    <div class="section">
+        <h3>Identification Card (KTP) </h3>
+        <input type="text" id="nama" placeholder="Name" />
+        <input type="text" id="alamat" placeholder="Address" />
+        <input type="text" id="noKTP" placeholder="Birthday date" />
+        <button onclick="tampilkanTemplate()"> Show </button>
+        <div class="template-box" id="ktpTemplate"></div>
+    </div>
+</div>
+
+<script>
+    // Fungsi 1: Menghitung diskon dan total yang harus dibayar
+    function hitungDiskon() {
+        const harga = parseFloat(document.getElementById("harga").value);
+        const diskon = parseFloat(document.getElementById("diskon").value);
+        
+        if (isNaN(harga) || isNaN(diskon)) {
+            document.getElementById("diskonResult").innerHTML = "Enter a valid price and discount!";
+            return;
+        }
+
+        const diskonNominal = harga * (diskon / 100);
+        const totalBayar = harga - diskonNominal;
+        document.getElementById("diskonResult").innerHTML = `Discount: ${diskonNominal} IDR<br>Total: ${totalBayar} IDR`;
+    }
+
+    // Fungsi 2: Konversi suhu
+    function konversiSuhu() {
+        const suhu = parseFloat(document.getElementById("suhu").value);
+        const unit = document.getElementById("unitInput").value;
+        let hasil = "";
+
+        if (isNaN(suhu)) {
+            document.getElementById("konversiResult").innerHTML = "Enter a valid temperature!";
+            return;
+        }
+
+        switch (unit) {
+            case "Celsius":
+                hasil = `Fahrenheit: ${(suhu * 9/5) + 32} °F<br>Kelvin: ${suhu + 273.15} K<br>Reamur: ${suhu * 4/5} °R`;
+                break;
+            case "Fahrenheit":
+                hasil = `Celcius: ${(suhu - 32) * 5/9} °C<br>Kelvin: ${((suhu - 32) * 5/9) + 273.15} K<br>Reamur: ${(suhu - 32) * 4/9} °R`;
+                break;
+            case "Kelvin":
+                hasil = `Celcius: ${suhu - 273.15} °C<br>Fahrenheit: ${(suhu - 273.15) * 9/5 + 32} °F<br>Reamur: ${(suhu - 273.15) * 4/5} °R`;
+                break;
+            case "Reamur":
+                hasil = `Celcius: ${suhu * 5/4} °C<br>Fahrenheit: ${(suhu * 9/4) + 32} °F<br>Kelvin: ${(suhu * 5/4) + 273.15} K`;
+                break;
+            default:
+                hasil = "Invalid temperature unit!";
+        }
+
+        document.getElementById("konversiResult").innerHTML = hasil;
+    }
+
+    // Fungsi 3: Kalkulator
+    function kalkulator() {
+        const angka1 = parseFloat(document.getElementById("angka1").value);
+        const angka2 = parseFloat(document.getElementById("angka2").value);
+        const operasi = document.getElementById("operasi").value;
+        let hasil;
+
+        if (isNaN(angka1) || isNaN(angka2)) {
+            document.getElementById("kalkulatorResult").innerHTML = "Enter a valid number!";
+            return;
+        }
+
+        switch (operasi) {
+            case "add":
+                hasil = angka1 + angka2;
+                break;
+            case "subtract":
+                hasil = angka1 - angka2;
+                break;
+            case "multiply":
+                hasil = angka1 * angka2;
+                break;
+            case "divide":
+                if (angka2 === 0) {
+                    hasil = "Cannot divide by zero";
+                } else {
+                    hasil = angka1 / angka2;
+                }
+                break;
+            default:
+                hasil = "Invalid operation";
+        }
+
+        document.getElementById("kalkulatorResult").innerHTML = "Hasil: " + hasil;
+    }
+
+    // Fungsi 4: Template KTP
+    function tampilkanTemplate() {
+        const nama = document.getElementById("nama").value;
+        const alamat = document.getElementById("alamat").value;
+        const noKTP = document.getElementById("noKTP").value;
+
+        if (!nama || !alamat || !noKTP) {
+            document.getElementById("ktpTemplate").innerHTML = "Enter all data please!";
+            return;
+        }
+
+        const template = `
+            <p><strong>Nama:</strong> ${nama}</p>
+            <p><strong>Alamat:</strong> ${alamat}</p>
+            <p><strong>No. KTP:</strong> ${noKTP}</p>
+        `;
+        document.getElementById("ktpTemplate").innerHTML = template;
+    }
+</script>
+
+</body>
+</html>
